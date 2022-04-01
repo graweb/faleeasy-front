@@ -8,12 +8,15 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
+import { VueMaskDirective } from 'v-mask'
 
 Vue.config.productionTip = false
 
 Vue.use(VueMeta)
 Vue.use(VueSweetalert2)
 Vue.use(Loading)
+Vue.use(require('vue-moment'))
+Vue.directive('mask', VueMaskDirective);
 
 Vue.prototype.api = api
 

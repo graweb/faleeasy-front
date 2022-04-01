@@ -363,9 +363,7 @@ export default {
   },
 
   methods: {
-
     listUsers() {
-
       const isLoading = this.$loading.show();
 
       this.api
@@ -404,124 +402,122 @@ export default {
     },
 
     save() {
+      if(this.$refs.form.validate()) {
+        const isLoading = this.$loading.show();
 
-      this.$refs.form.validate()
+        const data = {
+          'name': this.editedItem.name,
+          'email': this.editedItem.email,
+          'password': this.editedItem.password,
+          'change_password': this.editedItem.change_password,
+          'type': this.editedItem.type,
+          'situation': this.editedItem.situation
+        }
 
-      const isLoading = this.$loading.show();
+        if(this.editedItem.id === '' || this.editedItem.id === null) {
+          
+          this.api
+          .storeUsers(data)
+          .then(async () => {
 
-      const data = {
-        'name': this.editedItem.name,
-        'email': this.editedItem.email,
-        'password': this.editedItem.password,
-        'change_password': this.editedItem.change_password,
-        'type': this.editedItem.type,
-        'situation': this.editedItem.situation
+            const Toast = this.$swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'success',
+              title: 'Usuário cadastrado com sucesso'
+            })
+
+            this.listUsers()
+            this.dialog = false
+
+          })
+          .catch(error => {
+
+            const Toast = this.$swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'error',
+              title: error.response.data
+            })
+
+          })
+          .finally(() => {
+            isLoading.hide()
+          })
+        } else {
+
+          this.api
+          .updateUsers(this.editedItem.id, data)
+          .then(async () => {
+
+            const Toast = this.$swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'success',
+              title: 'Usuário atualizado com sucesso'
+            })
+
+            this.listUsers()
+            this.dialog = false
+
+          })
+          .catch(() => {
+
+            const Toast = this.$swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro de conexão, favor tente novamente'
+            })
+
+          })
+          .finally(() => {
+            isLoading.hide()
+          })
+        }
+
+        this.$refs.form.reset()
       }
-
-      if(this.editedItem.id == '') {
-        
-        this.api
-        .storeUsers(data)
-        .then(async () => {
-
-          const Toast = this.$swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', this.$swal.stopTimer)
-              toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-            }
-          })
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Usuário cadastrado com sucesso'
-          })
-
-          this.listUsers()
-          this.dialog = false
-
-        })
-        .catch(error => {
-
-          const Toast = this.$swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', this.$swal.stopTimer)
-              toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-            }
-          })
-
-          Toast.fire({
-            icon: 'error',
-            title: error.response.data
-          })
-
-        })
-        .finally(() => {
-          isLoading.hide()
-        })
-      } else {
-
-        this.api
-        .updateUsers(this.editedItem.id, data)
-        .then(async () => {
-
-          const Toast = this.$swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', this.$swal.stopTimer)
-              toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-            }
-          })
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Usuário atualizado com sucesso'
-          })
-
-          this.listUsers()
-          this.dialog = false
-
-        })
-        .catch(() => {
-
-          const Toast = this.$swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', this.$swal.stopTimer)
-              toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-            }
-          })
-
-          Toast.fire({
-            icon: 'error',
-            title: 'Erro de conexão, favor tente novamente'
-          })
-
-        })
-        .finally(() => {
-          isLoading.hide()
-        })
-
-      }
-
-      this.$refs.form.reset()
     },
 
     editDialog() {
@@ -531,7 +527,6 @@ export default {
     },
 
     saveDelete() {
-
       for(var i = 0; i < this.selected.length; i++){
 
         const isLoading = this.$loading.show();
@@ -617,7 +612,6 @@ export default {
     },
 
     saveDialogChangePassword() {
-
       const data = {
         'password': this.editPassword.password,
       }

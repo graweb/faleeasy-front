@@ -85,6 +85,54 @@ const Api = {
     deleteSchedules(id) {
         return base.delete('schedules/'+id)
     },
+
+    // PEOPLE
+    listPeople(type) {
+        return base.get('people/' + type)
+    },
+
+    // CLASS BLOCK
+    listClassBlock() {
+        return base.get('class-block')
+    },
+
+    storeClassBlock(data) {
+        return base.post('class-block', data)
+    },
+
+    // PACKAGES
+    listPackages() {
+        return base.get('packages')
+    },
+
+    storePackages(data) {
+        return base.post('packages', data)
+    },
+
+    updatePackages(id, data) {
+        return base.put('packages/'+id, data)
+    },
+
+    deletePackages(id) {
+        return base.delete('packages/'+id)
+    },
+
+    // NOTIFICATIONS
+    listNotifications() {
+        return base.get('notifications')
+    },
+
+    storeNotifications(data) {
+        return base.post('notifications', data)
+    },
+
+    updateNotifications(id, data) {
+        return base.put('notifications/'+id, data)
+    },
+
+    deleteNotifications(id) {
+        return base.delete('notifications/'+id)
+    },
 }
 
 export default Api

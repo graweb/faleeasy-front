@@ -91,14 +91,14 @@ export default {
     return {
       logo: require('./assets/logo.png'),
       items: [
-        { title: 'Home', icon: 'mdi-home', tooltip: 'Home', action: () => { this.$router.push('/dashboard') } },
-        { title: 'Agenda', icon: 'mdi-calendar-check', tooltip: 'Agenda', action: () => { this.$router.push('/schedule') } },
-        { title: 'Usuários', icon: 'mdi-account-multiple', tooltip: 'Usuários', action: () => { this.$router.push('/users') } },
-        { title: 'Bloqueio de aulas', icon: 'mdi-block-helper', tooltip: 'Bloqueio de aulas', action: () => { this.$router.push('/class-block') } },
-        { title: 'Exercícios', icon: 'mdi-book-open-variant', tooltip: 'Exercícios', action: () => { this.$router.push('/exercises') } },
-        { title: 'Pacotes', icon: 'mdi-package', tooltip: 'Pacotes', action: () => { this.$router.push('/packages') } },
-        { title: 'Notificações', icon: 'mdi-bell', tooltip: 'Notificações', action: () => { this.$router.push('/notifications') } },
-        { title: 'Relatórios', icon: 'mdi-file-chart-outline', tooltip: 'Relatórios', action: () => { this.$router.push('/reports') } },
+        { title: 'Home', icon: 'mdi-home', tooltip: 'Home', action: () => { this.$router.push('/dashboard').catch(() => {}) }},
+        { title: 'Pacotes', icon: 'mdi-package', tooltip: 'Pacotes', action: () => { this.$router.push('/packages').catch(() => {}) }},
+        { title: 'Agenda', icon: 'mdi-calendar-check', tooltip: 'Agenda', action: () => { this.$router.push('/schedule').catch(() => {}) }},
+        { title: 'Bloqueio de aulas', icon: 'mdi-block-helper', tooltip: 'Bloqueio de aulas', action: () => { this.$router.push('/class-block').catch(() => {}) }},
+        { title: 'Usuários', icon: 'mdi-account-multiple', tooltip: 'Usuários', action: () => { this.$router.push('/users').catch(() => {}) }},
+        { title: 'Exercícios', icon: 'mdi-book-open-variant', tooltip: 'Exercícios', action: () => { this.$router.push('/exercises').catch(() => {}) }},
+        { title: 'Notificações', icon: 'mdi-bell', tooltip: 'Notificações', action: () => { this.$router.push('/notifications').catch(() => {}) }},
+        { title: 'Relatórios', icon: 'mdi-file-chart-outline', tooltip: 'Relatórios', action: () => { this.$router.push('/reports').catch(() => {}) }},
       ],
     }
   },

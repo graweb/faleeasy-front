@@ -1,126 +1,177 @@
 <template>
-  <v-data-table
-    v-model="selected"
-    :headers="headers"
-    :items="desserts"
-    :single-select="singleSelect"
-    item-key="name"
-    show-select
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-switch
-        v-model="singleSelect"
-        label="Single select"
-        class="pa-3"
-      ></v-switch>
-    </template>
-  </v-data-table>
+  <div>
+    <v-data-table
+      v-model="selected"
+      :headers="headers"
+      :items="reports"
+      single-select
+      item-key="name"
+      show-select
+      class="elevation-1"
+      :search="search"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                elevation="2" 
+                class="ml-4 mt-4 mr-2 mb-4" 
+                outlined 
+                color="deep-purple accent-4"  
+                v-on="on"
+                v-bind="attrs"
+                @click="dialog = true">
+                <v-icon>mdi-printer</v-icon>
+              </v-btn>
+            </template>
+            <span>Gerar relatório</span>
+          </v-tooltip>
+          
+        </v-toolbar>
+
+        <v-card-title>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Buscar"
+            single-line
+            hide-details
+          />
+        </v-card-title>
+      </template>
+    </v-data-table>
+
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="600px"
+      >
+        <v-form 
+          ref="form"
+          v-model="valid"
+          lazy-validation>
+
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Relatório pacotes por aluno</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+
+                  <v-col cols="12">
+                    <v-autocomplete
+                      label="Aluno *"
+                      clearable
+                      :items="students"
+                      v-model="user_id"
+                      :rules="[v => !!v || 'Aluno é obrigatório']"
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                    />
+                  </v-col>
+
+                </v-row>
+              </v-container>
+              <small style="color:red">* campos obrigatórios</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn 
+                color="red darken-1" 
+                text 
+                @click="dialog = false">
+                Fechar
+              </v-btn>
+              <v-btn 
+                color="primary" 
+                :disabled="!valid"
+                @click="generate">
+                Gerar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+    </v-row>
+  </div>
+
 </template>
 
 <script>
 export default {
-    data () {
-        return {
-        singleSelect: false,
-        selected: [],
-        headers: [
-            {
-            text: 'Dessert (100g serving)',
-            align: 'start',
-            sortable: false,
-            value: 'name',
-            },
-            { text: 'Calories', value: 'calories' },
-            { text: 'Fat (g)', value: 'fat' },
-            { text: 'Carbs (g)', value: 'carbs' },
-            { text: 'Protein (g)', value: 'protein' },
-            { text: 'Iron (%)', value: 'iron' },
-        ],
-        desserts: [
-            {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-            },
-            {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-            },
-            {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
-            },
-            {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-            },
-            {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-            },
-            {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-            },
-            {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-            },
-            {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-            },
-            {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-            },
-            {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
-            },
-        ],
-        }
+  data () {
+    return {
+      dialog: false,
+      selected: [],
+      search: '',
+      headers: [
+        { text: 'RELATÓRIO', value: 'name' }
+      ],
+      reports: [
+        {
+          name: 'Pacotes por aluno',
+        },
+        {
+          name: 'Agenda do professor',
+        },
+        {
+          name: 'Matéria aplicada por aluno',
+        },
+        {
+          name: 'Bloqueio de aulas',
+        },
+      ],
+
+      // FORM VALIDATION
+      valid: true,
+
+      user_id: '',
+    }
+  },
+
+  mounted() {
+    this.listStudents()
+  },
+
+  methods: {
+    listStudents() {
+      const isLoading = this.$loading.show();
+
+      this.api
+      .listPeople('Aluno')
+      .then(async res => {
+        this.students = res.data.map(el => ({...el, text: `${el.name}`, value: `${el.id}`}))
+      })
+      .catch(() => {
+
+        const Toast = this.$swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', this.$swal.stopTimer)
+            toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
+          icon: 'error',
+          title: 'Erro de conexão, favor tente novamente'
+        })
+
+      })
+      .finally(() => {
+        isLoading.hide()
+      })
     },
+  }
 }
 </script>
 
